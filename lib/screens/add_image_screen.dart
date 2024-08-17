@@ -4,9 +4,12 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../models/app_user.dart'; 
 
 class AddImageScreen extends StatefulWidget {
-  const AddImageScreen({Key? key}) : super(key: key);
+  final AppUser user;
+
+  const AddImageScreen({Key? key, required this.user}) : super(key: key);
 
   @override
   _AddImageScreenState createState() => _AddImageScreenState();

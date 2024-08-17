@@ -15,17 +15,20 @@ class CustomSearchBar extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-        color: Colors.grey[200],
+        color: Colors.transparent,
         borderRadius: BorderRadius.circular(25),
+        border: Border.all(color: Colors.white),
       ),
       child: TextField(
         controller: controller,
+        style: TextStyle(color: Colors.white),
         decoration: InputDecoration(
           hintText: 'Search...',
+          hintStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
           border: InputBorder.none,
-          icon: const Icon(Icons.search),
+          icon: Icon(Icons.search, color: Colors.white),
           suffixIcon: IconButton(
-            icon: const Icon(Icons.clear),
+            icon: Icon(Icons.clear, color: Colors.white),
             onPressed: onClear,
           ),
         ),

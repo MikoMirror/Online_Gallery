@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
-import '../models/user.dart' as app_models;
+import '../models/app_user.dart' as app_models;
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -37,6 +37,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignUpRequested>((event, emit) async {
       emit(AuthLoading());
       try {
+        print("SignUpRequested event received"); // Add this line
         UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
           email: event.email,
           password: event.password,
@@ -57,6 +58,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         
         emit(Authenticated(user));
       } catch (e) {
+        print("Error in SignUpRequested: $e"); // Add this line
         emit(AuthError(e.toString()));
         emit(Unauthenticated());
       }

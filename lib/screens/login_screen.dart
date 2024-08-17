@@ -5,7 +5,7 @@ import '../widgets/custom_button.dart';
 import '../blocs/auth_bloc.dart';
 import '../blocs/auth_event.dart';
 import '../blocs/auth_state.dart';
-import '../models/user.dart';
+import '../models/app_user.dart';
 import 'register_screen.dart';
 import 'main_screen.dart';
 
