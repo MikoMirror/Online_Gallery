@@ -1,20 +1,33 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
+import '../models/user.dart' as app_models;
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   AuthBloc() : super(AuthInitial()) {
     on<SignInRequested>((event, emit) async {
       emit(AuthLoading());
       try {
-        await _auth.signInWithEmailAndPassword(
+        UserCredential userCredential = await _auth.signInWithEmailAndPassword(
           email: event.email,
           password: event.password,
         );
-        emit(Authenticated());
+        
+        // Fetch user data from Firestore
+        DocumentSnapshot userDoc = await _firestore.collection('users').doc(userCredential.user!.uid).get();
+        
+        app_models.AppUser user = app_models.AppUser(
+          uid: userCredential.user!.uid,
+          email: userCredential.user!.email!,
+          nickname: userDoc.get('nickname'),
+        );
+        
+        emit(Authenticated(user));
       } catch (e) {
         emit(AuthError(e.toString()));
         emit(Unauthenticated());
@@ -24,11 +37,25 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignUpRequested>((event, emit) async {
       emit(AuthLoading());
       try {
-        await _auth.createUserWithEmailAndPassword(
+        UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
           email: event.email,
           password: event.password,
         );
-        emit(Authenticated());
+        
+        // Save user data to Firestore
+        await _firestore.collection('users').doc(userCredential.user!.uid).set({
+          'email': event.email,
+          'nickname': event.nickname,
+        });
+        
+        // Create an AppUser object with the nickname
+        app_models.AppUser user = app_models.AppUser(
+          uid: userCredential.user!.uid,
+          email: userCredential.user!.email!,
+          nickname: event.nickname,
+        );
+        
+        emit(Authenticated(user));
       } catch (e) {
         emit(AuthError(e.toString()));
         emit(Unauthenticated());

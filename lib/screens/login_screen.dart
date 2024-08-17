@@ -5,7 +5,9 @@ import '../widgets/custom_button.dart';
 import '../blocs/auth_bloc.dart';
 import '../blocs/auth_event.dart';
 import '../blocs/auth_state.dart';
+import '../models/user.dart';
 import 'register_screen.dart';
+import 'main_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -20,8 +22,10 @@ class LoginScreen extends StatelessWidget {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is Authenticated) {
-            // Navigate to home screen when authenticated
-            Navigator.of(context).pushReplacementNamed('/home');
+            // Navigate to MainScreen when authenticated
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => MainScreen(user: state.user)),
+            );
           }
           if (state is AuthError) {
             // Show error snackbar
