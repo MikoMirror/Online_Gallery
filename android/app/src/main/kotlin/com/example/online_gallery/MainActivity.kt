@@ -1,5 +1,6 @@
-package com.example.online_gallery
+package com.miko.glassgallery
 
 import io.flutter.embedding.android.FlutterActivity
 
-class MainActivity: FlutterActivity()
+class MainActivity: FlutterActivity() {
+}

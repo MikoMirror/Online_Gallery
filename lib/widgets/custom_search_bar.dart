@@ -1,37 +1,33 @@
 import 'package:flutter/material.dart';
+import '../theme/app_colors.dart';
 
 class CustomSearchBar extends StatelessWidget {
   final TextEditingController controller;
-  final VoidCallback onClear;
+  final Function(String) onChanged;
 
   const CustomSearchBar({
     Key? key,
     required this.controller,
-    required this.onClear,
+    required this.onChanged,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        borderRadius: BorderRadius.circular(25),
-        border: Border.all(color: Colors.white),
-      ),
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
       child: TextField(
         controller: controller,
-        style: TextStyle(color: Colors.white),
         decoration: InputDecoration(
-          hintText: 'Search...',
-          hintStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
-          border: InputBorder.none,
-          icon: Icon(Icons.search, color: Colors.white),
-          suffixIcon: IconButton(
-            icon: Icon(Icons.clear, color: Colors.white),
-            onPressed: onClear,
+          hintText: 'Search',
+          prefixIcon: Icon(Icons.search),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+            borderSide: BorderSide.none,
           ),
+          filled: true,
+          fillColor: AppColors.primaryGray.withOpacity(0.1),
         ),
+        onChanged: onChanged,
       ),
     );
   }
